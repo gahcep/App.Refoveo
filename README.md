@@ -24,7 +24,8 @@ either weren't accepted due to time limitations or weren't known at that time (I
 Information
 ===========
 
-The project has associated bug tracker (Jira) located at [gahcep.atlassian.net](gahcep.atlassian.net).
+Issue tracker: https://gahcep.atlassian.net (JIRA)
+
 
 Current state
 =============
