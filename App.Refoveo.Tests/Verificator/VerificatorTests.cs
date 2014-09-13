@@ -9,6 +9,8 @@ namespace App.Refoveo.Tests.Verificator
     [Category("Verification")]
     public class VerificatorTests
     {
+        #region FileVerificator
+
         [Test]
         public void TestFileNameWithNull()
         {
@@ -171,5 +173,85 @@ namespace App.Refoveo.Tests.Verificator
             Assert.IsTrue(FileVerificator.Size.EqualTo(testFile1Kb, size1Kb));
             Assert.IsTrue(FileVerificator.Size.EqualTo(testFile1Kb, size500Kb, size500Kb));
         }
+
+        #endregion
+
+        #region DirectoryVerificator
+        
+        [Test]
+        public void TestDirExists()
+        {
+            var testDir = Path.Combine(Directory.GetCurrentDirectory(), "DeleteMeDir");
+            if (!Directory.Exists(testDir))
+                Directory.CreateDirectory(testDir);
+
+            var testDirNotExists = Path.Combine(Directory.GetCurrentDirectory(), "NotExistingDir");
+
+            Assert.Catch(typeof(ArgumentException), () => DirectoryVerificator.DirExists(null));
+            Assert.IsTrue(DirectoryVerificator.DirExists(testDir));
+            Assert.IsFalse(DirectoryVerificator.DirExists(testDirNotExists));
+
+            Directory.Delete(testDir);
+        }
+
+        [Test]
+        public void TestUncDirExistsTrue()
+        {
+            var testDir = Path.Combine(Directory.GetCurrentDirectory(), "DeleteMeDir");
+            if (!Directory.Exists(testDir))
+                Directory.CreateDirectory(testDir);
+
+            var uncPathValid = new Uri(testDir).AbsoluteUri;
+            var dirPathInvalid = Path.Combine(Directory.GetCurrentDirectory(), "NotExistingDir");
+            var uncPathInvalid = new Uri(dirPathInvalid).AbsoluteUri;
+
+            Assert.Catch(typeof(ArgumentException), () => DirectoryVerificator.UncDirExists(null));
+            Assert.IsTrue(DirectoryVerificator.UncDirExists(uncPathValid));
+            Assert.IsFalse(DirectoryVerificator.UncDirExists(uncPathInvalid));
+
+            Directory.Delete(testDir);
+        }
+
+        [Test]
+        public void TestIsDir()
+        {
+            var testFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestFile.txt");
+
+            Assert.IsTrue(DirectoryVerificator.IsDir(Directory.GetCurrentDirectory()));
+            Assert.IsFalse(DirectoryVerificator.IsDir(testFilePath));
+        }
+
+        [Test]
+        public void TestIsDirEmpty()
+        {
+            var emptyDir = Path.Combine(Directory.GetCurrentDirectory(), "DeleteMeDir");
+            if (!Directory.Exists(emptyDir))
+                Directory.CreateDirectory(emptyDir);
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestFile.txt");
+            var dirEmpty = Path.Combine(Directory.GetCurrentDirectory(), emptyDir);
+            var dirNotEmpty = Path.Combine(Directory.GetCurrentDirectory(), "NonEmptyDir");
+
+            Assert.Catch(typeof(ArgumentException), () => DirectoryVerificator.IsEmptyDir(filePath));
+            Assert.IsTrue(DirectoryVerificator.IsEmptyDir(dirEmpty));
+            Assert.IsFalse(DirectoryVerificator.IsEmptyDir(dirNotEmpty));
+
+            Directory.Delete(emptyDir);
+        }
+
+        [Test]
+        public void TestDirContains()
+        {
+            var testFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestFile.txt");
+            var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "NonEmptyDir");
+
+            Assert.Catch(typeof(ArgumentException), () => DirectoryVerificator.ContainsFile(dirPath, null));
+            Assert.Catch(typeof(ArgumentException), () => DirectoryVerificator.ContainsFile(dirPath, "  "));
+            Assert.Catch(typeof(ArgumentException), () => DirectoryVerificator.ContainsFile(testFilePath, "TestFile.txt"));
+            Assert.IsTrue(DirectoryVerificator.ContainsFile(dirPath, "TestFile.txt"));
+            Assert.IsFalse(DirectoryVerificator.ContainsFile(dirPath, "NotExistingFile.txt"));
+        }
+
+        #endregion
     }
 }

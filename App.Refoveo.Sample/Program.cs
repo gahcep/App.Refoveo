@@ -8,14 +8,10 @@ namespace App.Refoveo.Sample
     {
         static void Main(string[] args)
         {
-            long size500Kb = 512;
-            long size1Kb = 1*1024;
-            long size5Kb = 5*1024;
+            var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "NonEmptyDir");
 
-            var testFile1Kb = Path.Combine(Directory.GetCurrentDirectory(), "TestSize1Kb.txt");
-
-            var res = FileVerificator.Size.LessOrEqualTo(testFile1Kb, size1Kb);
-            res = FileVerificator.Size.GreaterOrEqualTo(testFile1Kb, size1Kb);
+            var res = DirectoryVerificator.ContainsFile(dirPath, "TestFile.txt");
+            res = false;
         }
     }
 }
