@@ -26,8 +26,12 @@ Information
 
 Issue tracker: https://gahcep.atlassian.net (JIRA)
 
+Tests: NUnit
+Test Coverage: dorCover
 
 Current state
 =============
+
+Test coverage: 100%
 
 Active development. Stay tuned!
