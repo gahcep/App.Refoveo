@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://www.w3schools.com"
+  xmlns="http://www.w3schools.com"
+  elementFormDefault="qualified">
+
+  <!-- Type: FileUpdate task -->
+  <xs:simpleType name="OfLocationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="LocationUnc" />
+      <xs:enumeration value="LocationRemote" />
+      <xs:enumeration value="LocationLocal" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="Channel">
+    <xs:complexType>
+      <xs:all>
+
+        <!-- UpdateVersion -->
+        <xs:element name="Version">
+          <xs:simpleType>
+            <xs:restriction base="xs:token">
+              <xs:pattern value="\d+\.\d+\.\d+" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+
+        <!-- UpdateData -->
+        <xs:element name="Date" type="xs:date" />
+
+        <xs:element name="Actions">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
