@@ -20,12 +20,16 @@ namespace App.Refoveo.Tests.Verificator
             // Set file attributes: 'Hidden' for 'TestHiddenFile.txt' and 'Read-Only' for 'TestReadOnlyFile.txt'
             var pathFileHidden = Path.Combine(pathTestData, "TestHiddenFile.txt");
             var pathFileReadOnly = Path.Combine(pathTestData, "TestReadOnlyFile.txt");
+            var pathFileSystem = Path.Combine(pathTestData, "TestSystemFile.txt");
 
             if (File.Exists(pathFileHidden))
                 File.SetAttributes(pathFileHidden, FileAttributes.Hidden);
 
             if (File.Exists(pathFileReadOnly))
                 File.SetAttributes(pathFileReadOnly, FileAttributes.ReadOnly);
+
+            if (File.Exists(pathFileSystem))
+                File.SetAttributes(pathFileSystem, FileAttributes.System);
         }
 
         #region FileVerificator
@@ -141,11 +145,13 @@ namespace App.Refoveo.Tests.Verificator
         }
 
         [Test]
-        public void TestFileTypeIsNotSystem()
+        public void TestFileTypeIsSystem()
         {
-            var testFilePath = Path.Combine(pathTestData, "TestFile.txt");
+            var fileSystem = Path.Combine(pathTestData, "TestSystemFile.txt");
+            var fileNotSystem = Path.Combine(pathTestData, "TestFile.txt");
 
-            Assert.IsFalse(FileVerificator.Type.IsSystem(testFilePath));
+            Assert.IsTrue(FileVerificator.Type.IsSystem(fileSystem));
+            Assert.IsFalse(FileVerificator.Type.IsSystem(fileNotSystem));
         }
 
         [Test]
