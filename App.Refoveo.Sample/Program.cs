@@ -8,10 +8,6 @@ namespace App.Refoveo.Sample
     {
         static void Main(string[] args)
         {
-            var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "NonEmptyDir");
-
-            var res = DirectoryVerificator.ContainsFile(dirPath, "TestFile.txt");
-            res = false;
         }
     }
 }
