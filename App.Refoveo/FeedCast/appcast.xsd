@@ -19,7 +19,7 @@
     <xs:complexType>
       <xs:all>
 
-        <!-- UpdateVersion -->
+        <!-- Version -->
         <xs:element name="Version">
           <xs:simpleType>
             <xs:restriction base="xs:token">
@@ -28,7 +28,7 @@
           </xs:simpleType>
         </xs:element>
 
-        <!-- UpdateData -->
+        <!-- Data -->
         <xs:element name="Date" type="xs:date" />
 
         <xs:element name="Actions">
