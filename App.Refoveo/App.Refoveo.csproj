@@ -63,6 +63,18 @@
     <Folder Include="Shared\" />
     <Folder Include="Utility\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="FeedCast\appcast.xml" />
+    <Content Include="FeedCast\appversion.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FeedCast\appcast.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="FeedCast\appversion.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

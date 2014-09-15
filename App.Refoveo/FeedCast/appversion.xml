@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Channel
+  xmlns="http://www.w3schools.com"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.w3schools.com appversion.xsd">
+  <Version>9.9.9</Version>
+  <Date>2014-10-10</Date>
+</Channel>
