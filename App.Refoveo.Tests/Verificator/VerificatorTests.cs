@@ -9,6 +9,25 @@ namespace App.Refoveo.Tests.Verificator
     [Category("Verification")]
     public class VerificatorTests
     {
+        // Path to Test Data
+        private string pathTestData;
+
+        [TestFixtureSetUp]
+        public void FixtureSetUp()
+        {
+            pathTestData = Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\Data");
+
+            // Set file attributes: 'Hidden' for 'TestHiddenFile.txt' and 'Read-Only' for 'TestReadOnlyFile.txt'
+            var pathFileHidden = Path.Combine(pathTestData, "TestHiddenFile.txt");
+            var pathFileReadOnly = Path.Combine(pathTestData, "TestReadOnlyFile.txt");
+
+            if (File.Exists(pathFileHidden))
+                File.SetAttributes(pathFileHidden, FileAttributes.Hidden);
+
+            if (File.Exists(pathFileReadOnly))
+                File.SetAttributes(pathFileReadOnly, FileAttributes.ReadOnly);
+        }
+
         #region FileVerificator
 
         [Test]
@@ -62,7 +81,7 @@ namespace App.Refoveo.Tests.Verificator
         [Test]
         public void TestFileExistsTrue()
         {
-            var testFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestFile.txt");
+            var testFilePath = Path.Combine(pathTestData, "TestFile.txt");
 
             Assert.IsTrue(FileVerificator.FileExists(testFilePath));
         }
@@ -70,7 +89,7 @@ namespace App.Refoveo.Tests.Verificator
         [Test]
         public void TestFileExistsFalse()
         {
-            var testFilePath = Path.Combine(Directory.GetCurrentDirectory(), "FileNotExist.txt");
+            var testFilePath = Path.Combine(pathTestData, "FileNotExist.txt");
 
             Assert.IsFalse(FileVerificator.FileExists(testFilePath));
         }
@@ -78,7 +97,7 @@ namespace App.Refoveo.Tests.Verificator
         [Test]
         public void TestUncFileExistsTrue()
         {
-            var testFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestFile.txt");
+            var testFilePath = Path.Combine(pathTestData, "TestFile.txt");
             var uncPath = new Uri(testFilePath).AbsoluteUri;
 
             Assert.IsTrue(FileVerificator.UncFileExists(uncPath));
@@ -87,7 +106,7 @@ namespace App.Refoveo.Tests.Verificator
         [Test]
         public void TestUncFileExistsFalse()
         {
-            var testFilePath = Path.Combine(Directory.GetCurrentDirectory(), "FileNotExist.txt");
+            var testFilePath = Path.Combine(pathTestData, "FileNotExist.txt");
             var uncPath = new Uri(testFilePath).AbsoluteUri;
 
             Assert.IsFalse(FileVerificator.UncFileExists(uncPath));
@@ -96,7 +115,7 @@ namespace App.Refoveo.Tests.Verificator
         [Test]
         public void TestFileTypeIsFile()
         {
-            var testFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestFile.txt");
+            var testFilePath = Path.Combine(pathTestData, "TestFile.txt");
 
             Assert.IsTrue(FileVerificator.Type.IsFile(testFilePath));
         }
@@ -104,8 +123,8 @@ namespace App.Refoveo.Tests.Verificator
         [Test]
         public void TestFileTypeIsReadOnly()
         {
-            var fileReadOnly = Path.Combine(Directory.GetCurrentDirectory(), "TestReadOnlyFile.txt");
-            var fileNotReadOnly = Path.Combine(Directory.GetCurrentDirectory(), "TestFile.txt");
+            var fileReadOnly = Path.Combine(pathTestData, "TestReadOnlyFile.txt");
+            var fileNotReadOnly = Path.Combine(pathTestData, "TestFile.txt");
 
             Assert.IsTrue(FileVerificator.Type.IsReadOnly(fileReadOnly));
             Assert.IsFalse(FileVerificator.Type.IsReadOnly(fileNotReadOnly));
@@ -114,8 +133,8 @@ namespace App.Refoveo.Tests.Verificator
         [Test]
         public void TestFileTypeIsHidden()
         {
-            var fileHidden = Path.Combine(Directory.GetCurrentDirectory(), "TestHiddenFile.txt");
-            var fileNotHidden = Path.Combine(Directory.GetCurrentDirectory(), "TestFile.txt");
+            var fileHidden = Path.Combine(pathTestData, "TestHiddenFile.txt");
+            var fileNotHidden = Path.Combine(pathTestData, "TestFile.txt");
 
             Assert.IsTrue(FileVerificator.Type.IsHidden(fileHidden));
             Assert.IsFalse(FileVerificator.Type.IsHidden(fileNotHidden));
@@ -124,7 +143,7 @@ namespace App.Refoveo.Tests.Verificator
         [Test]
         public void TestFileTypeIsNotSystem()
         {
-            var testFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestFile.txt");
+            var testFilePath = Path.Combine(pathTestData, "TestFile.txt");
 
             Assert.IsFalse(FileVerificator.Type.IsSystem(testFilePath));
         }
@@ -136,9 +155,9 @@ namespace App.Refoveo.Tests.Verificator
             long size1Kb = 1*1024;
             long size5Kb = 5*1024;
 
-            var testFile1Kb = Path.Combine(Directory.GetCurrentDirectory(), "TestSize1Kb.txt");
+            var testFile1Kb = Path.Combine(pathTestData, "TestSize1Kb.txt");
 
-            var testFileNotExists = Path.Combine(Directory.GetCurrentDirectory(), "NotExisting.txt");
+            var testFileNotExists = Path.Combine(pathTestData, "NotExisting.txt");
 
             // Validity
             Assert.Catch(typeof(ArgumentException), () => FileVerificator.Size.EqualTo(testFile1Kb, -1));
@@ -181,11 +200,11 @@ namespace App.Refoveo.Tests.Verificator
         [Test]
         public void TestDirExists()
         {
-            var testDir = Path.Combine(Directory.GetCurrentDirectory(), "DeleteMeDir");
+            var testDir = Path.Combine(pathTestData, "DeleteMeDir");
             if (!Directory.Exists(testDir))
                 Directory.CreateDirectory(testDir);
 
-            var testDirNotExists = Path.Combine(Directory.GetCurrentDirectory(), "NotExistingDir");
+            var testDirNotExists = Path.Combine(pathTestData, "NotExistingDir");
 
             Assert.Catch(typeof(ArgumentException), () => DirectoryVerificator.DirExists(null));
             Assert.IsTrue(DirectoryVerificator.DirExists(testDir));
@@ -197,12 +216,12 @@ namespace App.Refoveo.Tests.Verificator
         [Test]
         public void TestUncDirExistsTrue()
         {
-            var testDir = Path.Combine(Directory.GetCurrentDirectory(), "DeleteMeDir");
+            var testDir = Path.Combine(pathTestData, "DeleteMeDir");
             if (!Directory.Exists(testDir))
                 Directory.CreateDirectory(testDir);
 
             var uncPathValid = new Uri(testDir).AbsoluteUri;
-            var dirPathInvalid = Path.Combine(Directory.GetCurrentDirectory(), "NotExistingDir");
+            var dirPathInvalid = Path.Combine(pathTestData, "NotExistingDir");
             var uncPathInvalid = new Uri(dirPathInvalid).AbsoluteUri;
 
             Assert.Catch(typeof(ArgumentException), () => DirectoryVerificator.UncDirExists(null));
@@ -215,22 +234,22 @@ namespace App.Refoveo.Tests.Verificator
         [Test]
         public void TestIsDir()
         {
-            var testFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestFile.txt");
+            var testFilePath = Path.Combine(pathTestData, "TestFile.txt");
 
-            Assert.IsTrue(DirectoryVerificator.IsDir(Directory.GetCurrentDirectory()));
+            Assert.IsTrue(DirectoryVerificator.IsDir(pathTestData));
             Assert.IsFalse(DirectoryVerificator.IsDir(testFilePath));
         }
 
         [Test]
         public void TestIsDirEmpty()
         {
-            var emptyDir = Path.Combine(Directory.GetCurrentDirectory(), "DeleteMeDir");
+            var emptyDir = Path.Combine(pathTestData, "DeleteMeDir");
             if (!Directory.Exists(emptyDir))
                 Directory.CreateDirectory(emptyDir);
 
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestFile.txt");
-            var dirEmpty = Path.Combine(Directory.GetCurrentDirectory(), emptyDir);
-            var dirNotEmpty = Path.Combine(Directory.GetCurrentDirectory(), "NonEmptyDir");
+            var filePath = Path.Combine(pathTestData, "TestFile.txt");
+            var dirEmpty = Path.Combine(pathTestData, emptyDir);
+            var dirNotEmpty = Path.Combine(pathTestData, "NonEmptyDir");
 
             Assert.Catch(typeof(ArgumentException), () => DirectoryVerificator.IsEmptyDir(filePath));
             Assert.IsTrue(DirectoryVerificator.IsEmptyDir(dirEmpty));
@@ -242,8 +261,8 @@ namespace App.Refoveo.Tests.Verificator
         [Test]
         public void TestDirContains()
         {
-            var testFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestFile.txt");
-            var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "NonEmptyDir");
+            var testFilePath = Path.Combine(pathTestData, "TestFile.txt");
+            var dirPath = Path.Combine(pathTestData, "NonEmptyDir");
 
             Assert.Catch(typeof(ArgumentException), () => DirectoryVerificator.ContainsFile(dirPath, null));
             Assert.Catch(typeof(ArgumentException), () => DirectoryVerificator.ContainsFile(dirPath, "  "));
