@@ -36,7 +36,7 @@ Current state
 [![Build status](https://ci.appveyor.com/api/projects/status/bl4gsj08ufiovw5t)](https://ci.appveyor.com/project/gahcep/app-refoveo)
 
 Test coverage: 
- > **Overall (Workflow, Logic)**: 100%;  
- > **Libraries(Helpers)**: 100%
+ > **Overall (Workflow, Logic)**: 97%;  
+ > **Libraries (Helpers)**: 99%
 
 ### Active development. Stay tuned!
