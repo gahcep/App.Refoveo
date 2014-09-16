@@ -4,9 +4,9 @@ using Microsoft.Win32;
 
 namespace App.Refoveo.Helpers
 {
-    public class RegistryHelper
+    public static class RegistryHelper
     {
-        public RegistryKey RootFromHive(RegistryHive regHive)
+        public static RegistryKey RootFromHive(RegistryHive regHive)
         {
             switch (regHive)
             {
@@ -36,7 +36,7 @@ namespace App.Refoveo.Helpers
 
         #region Basic Validation
 
-        public bool SubKeyTreeExists(RegistryHive regHive, string regSubKeyTree)
+        public static bool SubKeyTreeExists(RegistryHive regHive, string regSubKeyTree)
         {
             var pathToOpen = RootFromHive(regHive).OpenSubKey(regSubKeyTree, false);
             if (pathToOpen == null)
@@ -49,43 +49,43 @@ namespace App.Refoveo.Helpers
             return subKeyCount != 0;
         }
 
-        public bool SubKeyExists(RegistryHive regHive, string regSubKey)
+        public static bool SubKeyExists(RegistryHive regHive, string regSubKey)
         {
-            var pathToOpen = RootFromHive(regHive).OpenSubKey(regSubKey, false);
-            if (pathToOpen == null) 
+            var key = RootFromHive(regHive).OpenSubKey(regSubKey, false);
+            if (key == null) 
                 return false;
 
-            pathToOpen.Close();
+            key.Close();
 
             return true;
         }
 
-        public bool KeyExists(RegistryHive regHive, string regSubKey, string regKey)
+        public static bool KeyExists(RegistryHive regHive, string regSubKey, string regKey)
         {
-            var pathToOpen = RootFromHive(regHive).OpenSubKey(regSubKey, false);
-            if (pathToOpen == null) 
+            var key = RootFromHive(regHive).OpenSubKey(regSubKey, false);
+            if (key == null) 
                 return false;
 
-            var isKeyCreated = pathToOpen.GetValueNames().AsEnumerable().Contains(regKey);
+            var isKeyCreated = key.GetValueNames().AsEnumerable().Contains(regKey);
             
-            pathToOpen.Close();
+            key.Close();
 
             return isKeyCreated;
         }
 
-        public bool ValueEqualTo(RegistryHive regHive, string regSubKey, string regKey, Object regValue)
+        public static bool IsValueEqualTo(RegistryHive regHive, string regSubKey, string regKey, Object regValue)
         {
-            var pathToOpen = RootFromHive(regHive).OpenSubKey(regSubKey, false);
-            if (pathToOpen == null) 
+            var key = RootFromHive(regHive).OpenSubKey(regSubKey, false);
+            if (key == null) 
                 return false;
 
-            var isKeyCreated = pathToOpen.GetValueNames().AsEnumerable().Contains(regKey);
-            if (!isKeyCreated)
+            var containsKey = key.GetValueNames().AsEnumerable().Contains(regKey);
+            if (!containsKey)
                 return false;
 
-            var isValueCreated = Object.Equals(pathToOpen.GetValue(regKey), regValue);
+            var isValueCreated = Object.Equals(key.GetValue(regKey), regValue);
 
-            pathToOpen.Close();
+            key.Close();
 
             return isValueCreated;
         }
@@ -94,7 +94,7 @@ namespace App.Refoveo.Helpers
 
         #region Registry Counts
 
-        public int CountKeyChilds(RegistryHive regHive, string regSubKeyTree)
+        public static int CountKeyChilds(RegistryHive regHive, string regSubKeyTree)
         {
             if (!SubKeyExists(regHive, regSubKeyTree))
                 throw new Exception(String.Format("Registry SubKeyTree '{0}' is not existed", regSubKeyTree));
@@ -103,7 +103,7 @@ namespace App.Refoveo.Helpers
             return key.GetSubKeyNames().Count();
         }
 
-        public int CountValueChilds(RegistryHive regHive, string regSubKey)
+        public static int CountValueChilds(RegistryHive regHive, string regSubKey)
         {
             if (!SubKeyExists(regHive, regSubKey))
                 throw new Exception(String.Format("Registry Path '{0}' is not existed", regSubKey));
@@ -116,7 +116,7 @@ namespace App.Refoveo.Helpers
 
         #region Registry Key & SubKey
 
-        public void CreateSubKey(RegistryHive regHive, string regSubKey)
+        public static void CreateSubKey(RegistryHive regHive, string regSubKey)
         {
             RootFromHive(regHive).CreateSubKey(regSubKey);
 
@@ -124,7 +124,7 @@ namespace App.Refoveo.Helpers
                 throw new Exception(String.Format("Fail to create given subkey {0}", regSubKey));
         }
 
-        public void DeleteSubKey(RegistryHive regHive, string regSubKey)
+        public static void DeleteSubKey(RegistryHive regHive, string regSubKey)
         {
             if (!SubKeyExists(regHive, regSubKey))
                 throw new Exception(String.Format("Given SubKey {0} not existed", regSubKey));
@@ -136,7 +136,7 @@ namespace App.Refoveo.Helpers
 
         #region Registry Key Value
 
-        public void CreateKey(RegistryHive regHive, string regSubKey, string regKey, Object regValue)
+        public static void CreateKey(RegistryHive regHive, string regSubKey, string regKey, Object regValue)
         {
             if (regValue.GetType() != typeof(String) &&
                 regValue.GetType() != typeof(int))
@@ -149,33 +149,33 @@ namespace App.Refoveo.Helpers
             key.SetValue(regKey, regValue);
         }
 
-        public Object ReadKeyValue(RegistryHive regHive, string regSubKey, string regKey)
+        public static Object ReadKeyValue(RegistryHive regHive, string regSubKey, string regKey)
         {
             if (!KeyExists(regHive, regSubKey, regKey))
                 throw new Exception(String.Format("Can't read from {0}. Check registry path", regKey));
 
-            var pathToOpen = RootFromHive(regHive).OpenSubKey(regSubKey, false);
-            var value = pathToOpen.GetValue(regKey);
+            var key = RootFromHive(regHive).OpenSubKey(regSubKey, false);
+            var value = key.GetValue(regKey);
             
-            pathToOpen.Close();
+            key.Close();
 
             return value;
         }
 
-        public bool DeleteKeyValue(RegistryHive regHive, string regSubKey, string regKey)
+        public static bool DeleteKeyValue(RegistryHive regHive, string regSubKey, string regKey)
         {
             if (!KeyExists(regHive, regSubKey, regKey))
                 return true;
 
-            var pathToOpen = RootFromHive(regHive).OpenSubKey(regSubKey, true);
-            pathToOpen.DeleteValue(regKey, throwOnMissingValue: false);
+            var key = RootFromHive(regHive).OpenSubKey(regSubKey, true);
+            key.DeleteValue(regKey, throwOnMissingValue: false);
 
-            pathToOpen.Close();
+            key.Close();
 
             return true;
         }
 
-        public void UpdateKeyValue(RegistryHive regHive, string regSubKey, string regKey, Object regNewValue)
+        public static void UpdateKeyValue(RegistryHive regHive, string regSubKey, string regKey, Object regNewValue)
         {
             if (regNewValue.GetType() != typeof(String) &&
                 regNewValue.GetType() != typeof(int))

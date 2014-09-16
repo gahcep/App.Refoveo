@@ -58,6 +58,7 @@
     <Compile Include="Utility\RfvVersion.cs" />
     <Compile Include="Verificator\DirectoryVerificator.cs" />
     <Compile Include="Verificator\FileVerificator.cs" />
+    <Compile Include="Verificator\RegistryVerificator.cs" />
     <Compile Include="Verificator\VersionVerificator.cs" />
   </ItemGroup>
   <ItemGroup>

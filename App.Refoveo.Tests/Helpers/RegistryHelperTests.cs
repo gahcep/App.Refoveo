@@ -9,7 +9,6 @@ namespace App.Refoveo.Tests.Helpers
     [Category("Helpers")]
     public class RegistryHelperTests
     {
-        private RegistryHelper regHelper;
         private string regValidRoot, 
             regNotValidRoot,
             regTmpSubKey,
@@ -57,130 +56,128 @@ namespace App.Refoveo.Tests.Helpers
             key.SetValue("Key1", "Default");
             key.SetValue("Key2", "Default");
             key.SetValue("Key3", 1000);
-
-            regHelper = new RegistryHelper();
         }
 
         [Test]
         public void TestRootFromHive()
         {
-            Assert.AreEqual(regHelper.RootFromHive(RegistryHive.DynData), Registry.PerformanceData);
-            Assert.AreEqual(regHelper.RootFromHive(RegistryHive.PerformanceData), Registry.PerformanceData);
-            Assert.AreEqual(regHelper.RootFromHive(RegistryHive.ClassesRoot), Registry.ClassesRoot);
-            Assert.AreEqual(regHelper.RootFromHive(RegistryHive.CurrentConfig), Registry.CurrentConfig);
-            Assert.AreEqual(regHelper.RootFromHive(RegistryHive.CurrentUser), Registry.CurrentUser);
-            Assert.AreEqual(regHelper.RootFromHive(RegistryHive.LocalMachine), Registry.LocalMachine);
-            Assert.AreEqual(regHelper.RootFromHive(RegistryHive.Users), Registry.Users);
-            Assert.AreEqual(regHelper.RootFromHive((RegistryHive)10000000), Registry.CurrentUser);
+            Assert.AreEqual(RegistryHelper.RootFromHive(RegistryHive.DynData), Registry.PerformanceData);
+            Assert.AreEqual(RegistryHelper.RootFromHive(RegistryHive.PerformanceData), Registry.PerformanceData);
+            Assert.AreEqual(RegistryHelper.RootFromHive(RegistryHive.ClassesRoot), Registry.ClassesRoot);
+            Assert.AreEqual(RegistryHelper.RootFromHive(RegistryHive.CurrentConfig), Registry.CurrentConfig);
+            Assert.AreEqual(RegistryHelper.RootFromHive(RegistryHive.CurrentUser), Registry.CurrentUser);
+            Assert.AreEqual(RegistryHelper.RootFromHive(RegistryHive.LocalMachine), Registry.LocalMachine);
+            Assert.AreEqual(RegistryHelper.RootFromHive(RegistryHive.Users), Registry.Users);
+            Assert.AreEqual(RegistryHelper.RootFromHive((RegistryHive)10000000), Registry.CurrentUser);
         }
 
         [Test]
         public void TestSubKeyTreeExists()
         {
-            Assert.True(regHelper.SubKeyTreeExists(RegistryHive.CurrentUser, regValidRoot));
-            Assert.False(regHelper.SubKeyTreeExists(RegistryHive.CurrentUser, regNotValidRoot));
+            Assert.True(RegistryHelper.SubKeyTreeExists(RegistryHive.CurrentUser, regValidRoot));
+            Assert.False(RegistryHelper.SubKeyTreeExists(RegistryHive.CurrentUser, regNotValidRoot));
         }
 
         [Test]
         public void TestSubKeyExists()
         {
-            Assert.True(regHelper.SubKeyExists(RegistryHive.CurrentUser, regExistingSubKey));
-            Assert.False(regHelper.SubKeyExists(RegistryHive.CurrentUser, regNotExistingSubKey));
+            Assert.True(RegistryHelper.SubKeyExists(RegistryHive.CurrentUser, regExistingSubKey));
+            Assert.False(RegistryHelper.SubKeyExists(RegistryHive.CurrentUser, regNotExistingSubKey));
         }
 
         [Test]
         public void TestKeyExists()
         {
-            Assert.True(regHelper.KeyExists(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "Key1"));
-            Assert.False(regHelper.KeyExists(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "Key100"));
-            Assert.False(regHelper.KeyExists(RegistryHive.CurrentUser, regNotExistingSubKey, "Key100"));
+            Assert.True(RegistryHelper.KeyExists(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "Key1"));
+            Assert.False(RegistryHelper.KeyExists(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "Key100"));
+            Assert.False(RegistryHelper.KeyExists(RegistryHive.CurrentUser, regNotExistingSubKey, "Key100"));
         }
 
         [Test]
         public void TestValueEqualTo()
         {
-            Assert.True(regHelper.ValueEqualTo(
+            Assert.True(RegistryHelper.IsValueEqualTo(
                 RegistryHive.CurrentUser, regNotEmptySecondSubKey, "Key1", "Default"));
-            Assert.False(regHelper.ValueEqualTo(
+            Assert.False(RegistryHelper.IsValueEqualTo(
                 RegistryHive.CurrentUser, regNotEmptySecondSubKey, "Key1", "WontMatch"));
-            Assert.False(regHelper.ValueEqualTo(
+            Assert.False(RegistryHelper.IsValueEqualTo(
                 RegistryHive.CurrentUser, regNotExistingSubKey, "Key1", "WontMatch"));
-            Assert.False(regHelper.ValueEqualTo(
+            Assert.False(RegistryHelper.IsValueEqualTo(
                 RegistryHive.CurrentUser, regNotEmptySecondSubKey, "Key100", "WontMatch"));
 
-            Assert.True(regHelper.ValueEqualTo(
+            Assert.True(RegistryHelper.IsValueEqualTo(
                 RegistryHive.CurrentUser, regNotEmptySecondSubKey, "Key3", 1000));
-            Assert.False(regHelper.ValueEqualTo(
+            Assert.False(RegistryHelper.IsValueEqualTo(
                 RegistryHive.CurrentUser, regNotEmptySecondSubKey, "Key3", 7777));
         }
 
         [Test]
         public void TestCountKeyChilds()
         {
-            Assert.AreEqual(regHelper.CountKeyChilds(RegistryHive.CurrentUser, regValidRoot), 3);
-            Assert.AreNotEqual(regHelper.CountKeyChilds(RegistryHive.CurrentUser, regValidRoot), 10);
+            Assert.AreEqual(RegistryHelper.CountKeyChilds(RegistryHive.CurrentUser, regValidRoot), 3);
+            Assert.AreNotEqual(RegistryHelper.CountKeyChilds(RegistryHive.CurrentUser, regValidRoot), 10);
 
-            Assert.Catch<Exception>(() => regHelper.CountKeyChilds(RegistryHive.CurrentUser, regNotValidRoot));
+            Assert.Catch<Exception>(() => RegistryHelper.CountKeyChilds(RegistryHive.CurrentUser, regNotValidRoot));
         }
 
         [Test]
         public void TestCountValueChilds()
         {
-            Assert.AreEqual(regHelper.CountValueChilds(RegistryHive.CurrentUser, regNotEmptySecondSubKey), 3);
-            Assert.AreNotEqual(regHelper.CountValueChilds(RegistryHive.CurrentUser, regNotEmptySecondSubKey), 10);
+            Assert.AreEqual(RegistryHelper.CountValueChilds(RegistryHive.CurrentUser, regNotEmptySecondSubKey), 3);
+            Assert.AreNotEqual(RegistryHelper.CountValueChilds(RegistryHive.CurrentUser, regNotEmptySecondSubKey), 10);
 
-            Assert.Catch<Exception>(() => regHelper.CountValueChilds(RegistryHive.CurrentUser, regNotExistingSubKey));
+            Assert.Catch<Exception>(() => RegistryHelper.CountValueChilds(RegistryHive.CurrentUser, regNotExistingSubKey));
         }
 
         [Test]
         public void TestCreateDeleteSubKey()
         {
-            Assert.False(regHelper.SubKeyExists(RegistryHive.CurrentUser, regTmpSubKey));
-            regHelper.CreateSubKey(RegistryHive.CurrentUser, regTmpSubKey);
-            //Assert.Catch<Exception>(() => regHelper.CreateSubKey(RegistryHive.CurrentUser, regNotExistingSubKey));
-            Assert.True(regHelper.SubKeyExists(RegistryHive.CurrentUser, regTmpSubKey));
-            regHelper.DeleteSubKey(RegistryHive.CurrentUser, regTmpSubKey);
+            Assert.False(RegistryHelper.SubKeyExists(RegistryHive.CurrentUser, regTmpSubKey));
+            RegistryHelper.CreateSubKey(RegistryHive.CurrentUser, regTmpSubKey);
+            //Assert.Catch<Exception>(() => RegistryHelper.CreateSubKey(RegistryHive.CurrentUser, regNotExistingSubKey));
+            Assert.True(RegistryHelper.SubKeyExists(RegistryHive.CurrentUser, regTmpSubKey));
+            RegistryHelper.DeleteSubKey(RegistryHive.CurrentUser, regTmpSubKey);
             Assert.Catch<Exception>(() =>
-                regHelper.DeleteSubKey(RegistryHive.CurrentUser, regNotExistingSubKey));
-            Assert.False(regHelper.SubKeyExists(RegistryHive.CurrentUser, regTmpSubKey));
+                RegistryHelper.DeleteSubKey(RegistryHive.CurrentUser, regNotExistingSubKey));
+            Assert.False(RegistryHelper.SubKeyExists(RegistryHive.CurrentUser, regTmpSubKey));
         }
 
         [Test]
         public void TestCreateDeleteUpdateKeyValue()
         {
-            Assert.False(regHelper.KeyExists(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew"));
+            Assert.False(RegistryHelper.KeyExists(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew"));
 
             Assert.Catch<Exception>(() => 
-                regHelper.CreateKey(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew", true));
+                RegistryHelper.CreateKey(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew", true));
             
             Assert.Catch<Exception>(() =>
-                regHelper.CreateKey(RegistryHive.CurrentUser, regNotExistingSubKey, "KeyNew", "KeyNew"));
+                RegistryHelper.CreateKey(RegistryHive.CurrentUser, regNotExistingSubKey, "KeyNew", "KeyNew"));
 
-            regHelper.CreateKey(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew", "ValueNew");
-            Assert.True(regHelper.ValueEqualTo(RegistryHive.CurrentUser, 
+            RegistryHelper.CreateKey(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew", "ValueNew");
+            Assert.True(RegistryHelper.IsValueEqualTo(RegistryHive.CurrentUser, 
                 regNotEmptySecondSubKey, "KeyNew", "ValueNew"));
             
-            regHelper.UpdateKeyValue(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew", "UpdatedValue");
+            RegistryHelper.UpdateKeyValue(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew", "UpdatedValue");
 
             Assert.Catch<Exception>(() =>
-                regHelper.UpdateKeyValue(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew", true));
+                RegistryHelper.UpdateKeyValue(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew", true));
 
             Assert.Catch<Exception>(() =>
-                regHelper.UpdateKeyValue(RegistryHive.CurrentUser, regNotExistingSubKey, "KeyNew", "KeyNew"));
+                RegistryHelper.UpdateKeyValue(RegistryHive.CurrentUser, regNotExistingSubKey, "KeyNew", "KeyNew"));
 
-            Assert.True(regHelper.ValueEqualTo(RegistryHive.CurrentUser,
+            Assert.True(RegistryHelper.IsValueEqualTo(RegistryHive.CurrentUser,
                 regNotEmptySecondSubKey, "KeyNew", "UpdatedValue"));
-            Assert.AreEqual(regHelper.ReadKeyValue(
+            Assert.AreEqual(RegistryHelper.ReadKeyValue(
                 RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew"), "UpdatedValue");
 
             Assert.Catch<Exception>(() =>
-                regHelper.ReadKeyValue(RegistryHive.CurrentUser, regNotExistingSubKey, "KeyNew"));
+                RegistryHelper.ReadKeyValue(RegistryHive.CurrentUser, regNotExistingSubKey, "KeyNew"));
 
-            regHelper.DeleteKeyValue(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew");
+            RegistryHelper.DeleteKeyValue(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew");
 
-            Assert.True(regHelper.DeleteKeyValue(RegistryHive.CurrentUser, regNotExistingSubKey, "KeyNew"));
+            Assert.True(RegistryHelper.DeleteKeyValue(RegistryHive.CurrentUser, regNotExistingSubKey, "KeyNew"));
 
-            Assert.False(regHelper.KeyExists(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew"));
+            Assert.False(RegistryHelper.KeyExists(RegistryHive.CurrentUser, regNotEmptySecondSubKey, "KeyNew"));
         }
 
         [TestFixtureTearDown]
