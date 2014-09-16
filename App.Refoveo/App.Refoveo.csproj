@@ -43,6 +43,8 @@
     <Compile Include="Abstractions\IFeedSource.cs" />
     <Compile Include="Actions\ResourceDelete.cs" />
     <Compile Include="Actions\ResourceUpdate.cs" />
+    <Compile Include="Helpers\AssemblyHelper.cs" />
+    <Compile Include="Helpers\RegistryHelper.cs" />
     <Compile Include="Properties\GlobalAssemblyInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FeedSources\FtpSource.cs" />
@@ -53,15 +55,16 @@
     <Compile Include="FeedSources\SshSource.cs" />
     <Compile Include="FeedSources\UncSource.cs" />
     <Compile Include="RfvUpdater.cs" />
+    <Compile Include="Utility\RfvVersion.cs" />
     <Compile Include="Verificator\DirectoryVerificator.cs" />
     <Compile Include="Verificator\FileVerificator.cs" />
+    <Compile Include="Verificator\RegistryVerificator.cs" />
+    <Compile Include="Verificator\VersionVerificator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Helpers\" />
     <Folder Include="Parser\" />
     <Folder Include="Serializer\" />
     <Folder Include="Shared\" />
-    <Folder Include="Utility\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FeedCast\appcast.xml" />

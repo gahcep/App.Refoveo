@@ -26,14 +26,17 @@ Information
 
 Issue tracker: https://gahcep.atlassian.net (JIRA)
 
-Tests: **NUnit**  
-Test Coverage: **dotCover**
+Tests: **NUnit**
+Test Coverage: **dotCover**  
+CI platform: **AppVeyor**
 
 Current state
 =============
 
 [![Build status](https://ci.appveyor.com/api/projects/status/bl4gsj08ufiovw5t)](https://ci.appveyor.com/project/gahcep/app-refoveo)
 
-Test coverage: 100%
+Test coverage: 
+ > **Overall (Workflow, Logic)**: 97%;  
+ > **Libraries (Helpers)**: 99%
 
-Active development. Stay tuned!
+### Active development. Stay tuned!

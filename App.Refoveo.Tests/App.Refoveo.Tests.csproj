@@ -45,6 +45,7 @@
     <Compile Include="..\App.Refoveo\Properties\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Helpers\RegistryHelperTests.cs" />
     <Compile Include="Verificator\VerificatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
