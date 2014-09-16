@@ -157,8 +157,8 @@ namespace App.Refoveo.Tests.Verificator
         [Test]
         public void TestFileSize()
         {
-            long size500Kb = 512;
-            long size1Kb = 1*1024;
+            const long size500Kb = 512;
+            const long size1Kb = 1*1024;
             long size5Kb = 5*1024;
 
             var testFile1Kb = Path.Combine(pathTestData, "TestSize1Kb.txt");
