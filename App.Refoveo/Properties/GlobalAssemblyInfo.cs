@@ -38,6 +38,6 @@
  *   
  *  {develop} branch contains ONLY alpha version
  */
-[assembly: AssemblyVersion("0.4.0")]
-[assembly: AssemblyFileVersion("0.4.0")]
-[assembly: AssemblyInformationalVersion("0.4.0-alpha.5")]
+[assembly: AssemblyVersion("0.5.0")]
+[assembly: AssemblyFileVersion("0.5.0")]
+[assembly: AssemblyInformationalVersion("0.5.0-alpha.6")]
