@@ -46,7 +46,8 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Helpers\RegistryHelperTests.cs" />
-    <Compile Include="Verificator\VerificatorTests.cs" />
+    <Compile Include="Verificator\DirectoryVerificatorTests.cs" />
+    <Compile Include="Verificator\FileVerificatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
