@@ -1,13 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Reflection;
+using App.Refoveo.Verificator;
 
 namespace App.Refoveo.Helpers
 {
-    public class AssemblyHelper
+    public static class AssemblyHelper
     {
-        
+        public static string FileVersion(Assembly assembly)
+        {
+            if (assembly == null)
+                throw new ArgumentNullException("assembly");
+
+            return FileVersionInfo.GetVersionInfo(assembly.Location).FileVersion;
+        }
+
+        public static string FileVersion(string assemblyFilePath)
+        {
+            if (!FileVerificator.FileExists(assemblyFilePath))
+                throw new ArgumentException("Invalid parameter", "assemblyFilePath");
+
+            return FileVersion(Assembly.LoadFile(assemblyFilePath));
+        }
     }
 }

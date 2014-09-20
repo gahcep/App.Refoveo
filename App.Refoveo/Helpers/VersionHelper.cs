@@ -47,9 +47,14 @@ namespace App.Refoveo.Helpers
                 int.Parse(matches.Groups[3].Value));
         }
 
-        public static string ExtractVersionFromAssembly(Assembly assemblyToParse = null)
+        public static string ExtractVersionFromAssembly(Assembly assemblyToParse)
         {
-            throw new NotImplementedException();
+            return AssemblyHelper.FileVersion(assemblyToParse);
+        }
+
+        public static string ExtractVersionFromAssembly(string assemblyFilePath)
+        {
+            return AssemblyHelper.FileVersion(assemblyFilePath);
         }
 
         public static string ExtractVersionFromRegistry(RegistryHive regHive, string regSubKey, string regKey)
@@ -117,7 +122,7 @@ namespace App.Refoveo.Helpers
             return CompareResult.CompareResultEqual;
         }
 
-        public static ChangeResult OnlyChanged(string appVersion, Assembly assemblyToParse = null)
+        public static ChangeResult OnlyChanged(string appVersion, Assembly assemblyToParse)
         {
             if (String.IsNullOrEmpty(appVersion))
                 throw new ArgumentNullException("appVersion");

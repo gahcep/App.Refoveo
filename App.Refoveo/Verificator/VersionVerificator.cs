@@ -64,7 +64,7 @@ namespace App.Refoveo.Verificator
             return VersionVerificator.IsEqual(appVersionLeft, appVersionRight);
         }
 
-        public static bool IsSameVersion(string appVersion, Assembly assemblyToParse = null)
+        public static bool IsSameVersion(string appVersion, Assembly assemblyToParse)
         {
             return VersionVerificator.IsEqual(appVersion, 
                 VersionHelper.ExtractVersionFromAssembly(assemblyToParse));
@@ -76,7 +76,7 @@ namespace App.Refoveo.Verificator
                 VersionHelper.ExtractVersionFromRegistry(regHive, regPath, regKey));
         }
 
-        public static bool IsVersionValid(string appVersion, Assembly assemblyToParse = null)
+        public static bool IsVersionValid(string appVersion, Assembly assemblyToParse)
         {
             return VersionVerificator.IsGreater(appVersion,
                 VersionHelper.ExtractVersionFromAssembly(assemblyToParse));
@@ -88,7 +88,7 @@ namespace App.Refoveo.Verificator
                 VersionHelper.ExtractVersionFromRegistry(regHive, regPath, regKey));
         }
 
-        public static bool IsMajorOnlyChanged(string appVersion, Assembly assemblyToParse = null)
+        public static bool IsMajorOnlyChanged(string appVersion, Assembly assemblyToParse)
         {
             return
                 VersionHelper.OnlyChanged(appVersion, assemblyToParse) ==
@@ -102,7 +102,7 @@ namespace App.Refoveo.Verificator
                 VersionHelper.ChangeResult.ChangeResultMajor;
         }
 
-        public static bool IsMinorOnlyChanged(string appVersion, Assembly assemblyToParse = null)
+        public static bool IsMinorOnlyChanged(string appVersion, Assembly assemblyToParse)
         {
             return
                 VersionHelper.OnlyChanged(appVersion, assemblyToParse) ==
@@ -116,7 +116,7 @@ namespace App.Refoveo.Verificator
                 VersionHelper.ChangeResult.ChangeResultMinor;
         }
 
-        public static bool IsPatchOnlyChanged(string appVersion, Assembly assemblyToParse = null)
+        public static bool IsPatchOnlyChanged(string appVersion, Assembly assemblyToParse)
         {
             return
                 VersionHelper.OnlyChanged(appVersion, assemblyToParse) ==

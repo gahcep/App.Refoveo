@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using App.Refoveo.Helpers;
 using Microsoft.Win32;
 using NUnit.Framework;
@@ -9,12 +11,17 @@ namespace App.Refoveo.Tests.Helpers
     [Category("Helpers")]
     public class VersionHelperTests
     {
+        // Path to Test Data
+        private string pathTestData;
+
         private string regValidRoot;
 
         [TestFixtureSetUp]
         public void FixtureSetUp()
         {
             const RegistryKeyPermissionCheck keyRights = RegistryKeyPermissionCheck.ReadWriteSubTree;
+
+            pathTestData = Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\Data");
 
             regValidRoot = "Software\\AppRefoveoVersionTest";
             
@@ -81,12 +88,16 @@ namespace App.Refoveo.Tests.Helpers
             Assert.Catch<ArgumentNullException>(() => VersionHelper.Compare("1.4.4", null));
             Assert.Catch<ArgumentException>(() => VersionHelper.Compare("x.y.z", "1.4.4"));
             Assert.Catch<ArgumentException>(() => VersionHelper.Compare("1.4.4", "x.y.z"));
-            Assert.Catch<ArgumentNullException>(() => VersionHelper.OnlyChanged(null));
         }
 
         [Test]
         public void TestOnlyChanged()
         {
+            var assemblyPath = Path.Combine(pathTestData, "DummyAssembly.4.5.6.0.dll");
+
+            Assert.AreEqual(VersionHelper.OnlyChanged("4.5.6", Assembly.LoadFile(assemblyPath)),
+                VersionHelper.ChangeResult.ChangeResultNone);
+
             Assert.AreEqual(VersionHelper.OnlyChanged("1.3.10", RegistryHive.CurrentUser, regValidRoot, "KeyValid"),
                 VersionHelper.ChangeResult.ChangeResultNone);
             Assert.AreEqual(VersionHelper.OnlyChanged("2.3.10", RegistryHive.CurrentUser, regValidRoot, "KeyValid"),
@@ -102,7 +113,15 @@ namespace App.Refoveo.Tests.Helpers
         }
 
         [Test]
-        public void TestOnlyChangedInvalidCases()
+        public void TestOnlyChangedInvalidGeneralCases()
+        {
+            Assert.Catch<ArgumentNullException>(() => VersionHelper.OnlyChanged("", null));
+            Assert.Catch<Exception>(
+                () => VersionHelper.OnlyChanged(new Tuple<int, int, int>(1, 1, 1), new Tuple<int, int, int>(2, 2, 2)));
+        }
+
+        [Test]
+        public void TestOnlyChangedInvalidRegistryCases()
         {
             Assert.Catch<ArgumentNullException>(
                 () => VersionHelper.OnlyChanged("", RegistryHive.CurrentUser, null, null));
@@ -116,14 +135,30 @@ namespace App.Refoveo.Tests.Helpers
                 () => VersionHelper.OnlyChanged("x.y.z", RegistryHive.CurrentUser, regValidRoot, "KeyValid"));
             Assert.Catch<ArgumentException>(
                 () => VersionHelper.OnlyChanged("5.5.5", RegistryHive.CurrentUser, regValidRoot, "KeyInvalid"));
-            Assert.Catch<Exception>(
-                () => VersionHelper.OnlyChanged(new Tuple<int, int, int>(1, 1, 1), new Tuple<int, int, int>(2, 2, 2)));
+        }
+
+        [Test]
+        public void TestOnlyChangedInvalidAssemblyCases()
+        {
+            Assert.Catch<ArgumentException>(
+                () => VersionHelper.OnlyChanged("x.y.z", Assembly.GetExecutingAssembly()));
         }
 
         [Test]
         public void TestParseVersion()
         {
             Assert.AreEqual(VersionHelper.ParseVersion(null), default(Tuple<int, int, int>));
+        }
+
+        [Test]
+        public void TestExtractVersion()
+        {
+            var curVersion = AssemblyHelper.FileVersion(Assembly.GetExecutingAssembly());
+
+            Assert.AreEqual(
+                VersionHelper.ExtractVersionFromAssembly(pathTestData + "\\DummyAssembly.4.5.6.0.dll"), "4.5.6.0");
+            Assert.AreEqual(
+                VersionHelper.ExtractVersionFromAssembly(Assembly.GetExecutingAssembly()), curVersion);
         }
 
         [TestFixtureTearDown]
