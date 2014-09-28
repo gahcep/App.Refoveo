@@ -8,7 +8,7 @@ namespace App.Refoveo.Verificator
     {
         public static bool IsFileNameValid(string fileName)
         {
-            if (String.IsNullOrWhiteSpace(fileName))
+            if (String.IsNullOrEmpty(fileName))
                 throw new ArgumentException("Parameter is invalid", "fileName");
 
             var invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
@@ -18,7 +18,7 @@ namespace App.Refoveo.Verificator
 
         public static bool IsFilePathValid(string pathFull)
         {
-            if (String.IsNullOrWhiteSpace(pathFull))
+            if (String.IsNullOrEmpty(pathFull))
                 throw new ArgumentException("Parameter is invalid", "pathFull");
 
             var invalidChars = Regex.Escape(new string(Path.GetInvalidPathChars()));
