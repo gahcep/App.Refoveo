@@ -56,16 +56,20 @@
     <Compile Include="FeedSources\SshSource.cs" />
     <Compile Include="FeedSources\UncSource.cs" />
     <Compile Include="RfvUpdater.cs" />
+    <Compile Include="Shared\Records.cs" />
     <Compile Include="Utility\RfvVersion.cs" />
+    <Compile Include="Verificator\AppcastVerificator.cs" />
     <Compile Include="Verificator\DirectoryVerificator.cs" />
     <Compile Include="Verificator\FileVerificator.cs" />
     <Compile Include="Verificator\RegistryVerificator.cs" />
+    <Compile Include="Verificator\StringVerificator.cs" />
     <Compile Include="Verificator\VersionVerificator.cs" />
+    <Compile Include="Verificator\XmlSchemaVerificator.cs" />
+    <Compile Include="Verificator\XmlVerificator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Parser\" />
     <Folder Include="Serializer\" />
-    <Folder Include="Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FeedCast\appcast.xml" />
