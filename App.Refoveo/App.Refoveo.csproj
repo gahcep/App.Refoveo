@@ -56,6 +56,7 @@
     <Compile Include="FeedSources\SshSource.cs" />
     <Compile Include="FeedSources\UncSource.cs" />
     <Compile Include="RfvUpdater.cs" />
+    <Compile Include="Shared\FeedSourceEnumerations.cs" />
     <Compile Include="Shared\Records.cs" />
     <Compile Include="Utility\RfvVersion.cs" />
     <Compile Include="Verificator\AppcastVerificator.cs" />
